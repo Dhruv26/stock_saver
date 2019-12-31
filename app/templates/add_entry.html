@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Add</title>
+
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <script type="text/javascript">
+            $(function() {
+                var fieldNum = 1;
+                $("#addNewField").click(function() {
+                    var current = $("#flist");
+
+                    $("#flist").append(createParameter(fieldNum));
+                    fieldNum += 1;
+                });
+            });
+
+             function createParameter(count) {
+             var toAppend = `
+                <li>
+                  <label for="${count}">Flist-${count}</label>
+                  <table id="flist-${count}">
+                     <tr>
+                        <th><label for="flist-${count}-type">Parameter Type</label></th>
+                        <td>
+                           <select id="flist-${count}-type" name="flist-${count}-type">
+                              <option value="a">A</option>
+                              <option value="b">B</option>
+                           </select>
+                        </td>
+                     </tr>
+                     <tr>
+                        <th><label for="flist-${count}-name">Indicator</label></th>
+                        <td>
+                           <select id="flist-${count}-name" name="flist-${count}-name">
+                              <option value="rsi">RSI</option>
+                              <option value="sma">SMA</option>
+                              <option value="ema">EMA</option>
+                           </select>
+                        </td>
+                     </tr>
+                     <tr>
+                        <th><label for="flist-${count}-value">Value</label></th>
+                        <td><input id="flist-${count}-value" name="flist-${count}-value" type="text" value=""></td>
+                     </tr>
+                  </table>
+                  <input id="flist-${count}-csrf_token" name="flist-${count}-csrf_token" type="hidden" value="IjlmMDYxMmYzYzk2NmI0MmQ3ZGZmNDE0ZGRkYjgzMzMxZmM4Y2E5MjYi.XgtNlA.h8mrANhY96KVeOmqTvBQfsRjMWY">
+               </li>
+               `;
+               console.log("" + toAppend);
+               return toAppend;
+             }
+
+        </script>
+    </head>
+    <body>
+        <p>Preparing add page...</p>
+        <form action="/addEntry" method="post" novalidate>
+            {{ form.hidden_tag() }}
+            <p>
+                {{ form.stock_name.label }} <br>
+                {{ form.stock_name(size=64) }}
+            </p>
+            <button type="button" id="addNewField">Add Field</button>
+            <p>
+                {{ form.flist }}
+            </p>
+            <div id="myDiv"></div>
+
+            <p>{{ form.submit() }}</p>
+        </form>
+
+    </body>
+</html>

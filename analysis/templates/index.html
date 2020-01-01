@@ -1,10 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Index Page</title>
-</head>
-<body>
+{% extends "base.html" %}
+
+{% block content %}
     <p>Preparing List...</p>
 
     <div>
@@ -12,6 +8,4 @@
         <br/>
         {{ table }}
     </div>
-
-</body>
-</html>
+{% endblock %}

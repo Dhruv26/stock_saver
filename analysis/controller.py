@@ -21,7 +21,6 @@ def index():
         res.update({n: [] for n in INDICATORS.values() if n not in res})
         table_items.append(res)
 
-    import pdb; pdb.set_trace()
     table = HomePageTable(items=table_items,
                           no_items='No entries created yet.',
                           classes=['hometable'],
@@ -39,23 +38,25 @@ def add():
             "indicators": [{k: v for k, v in d.items() if k != 'csrf_token'} for d in form.data['indicators']]
         }
         MongoDb().insert(data)
-        return redirect('/index')
+        return redirect(url_for('index'))
 
-    return render_template('add_entry.html', form=form)
+    return render_template('add_entry.html', title='Add new entry', form=form)
 
 
 @app.route('/update', methods=['POST'])
 def update():
     ob = AddEntryForm()
+
     data = {
         "stock_name": ob.data["stock_name"],
         "indicators": [{k: v for k, v in d.items() if k != 'csrf_token'} for d in ob.data['indicators']]
     }
     MongoDb().update(data)
-    return redirect('index')
+
+    return redirect(url_for('index'))
 
 
 @app.route('/delete', methods=['DELETE'])
 def delete(ob_id):
     MongoDb().delete(ob_id)
-    return redirect('index')
+    return redirect(url_for('index'))

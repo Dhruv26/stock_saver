@@ -2,6 +2,7 @@ from flask_table import Table, Col, ButtonCol
 
 
 class HomePageTable(Table):
+    classes = ['table', 'table-striped', 'table-bordered', 'table-hover']
     _id = Col('ID', show=False)
     stock_name = Col('Name')
     rsi = Col('RSI')

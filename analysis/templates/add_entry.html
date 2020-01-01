@@ -1,20 +1,23 @@
 {% extends "base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
 
-{% block content %}
+{% block app_content %}
    <h1>Enter the following details</h1>
 
    <form action="{{ url_for('add') }}" method="post" novalidate>
       {{ form.hidden_tag() }}
-      <p>
-         {{ form.stock_name.label }}
-         {{ form.stock_name(size=64) }}
-         <br>
-         {% for error in form.stock_name.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-         {% endfor %}
-      </p>
 
-      <button type="button" id="addNewField">Add Field</button>
+      <div class="form-group  required">
+         <label class="control-label" for="stock_name">{{ form.stock_name.label }}</label>
+         {{ form.stock_name(class="form-control") }}
+      </div>
+      {% for error in form.stock_name.errors %}
+         <span style="color: red;">[{{ error }}]</span>
+      <br>
+      {% endfor %}
+
+      <button type="button" id="addNewField" class="btn btn-primary">Add Field</button>
+      <br>
 
       <p>
          {{ form.indicators }}
@@ -25,7 +28,7 @@
       </p>
       <div id="myDiv"></div>
 
-      <p>{{ form.submit() }}</p>
+      <p>{{ form.submit(class="btn btn-success") }}</p>
    </form>
 
 {% endblock %}

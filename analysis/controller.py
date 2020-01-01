@@ -22,9 +22,7 @@ def index():
         table_items.append(res)
 
     table = HomePageTable(items=table_items,
-                          no_items='No entries created yet.',
-                          classes=['hometable'],
-                          border=True)
+                          no_items='No entries created yet.')
     return render_template('index.html', table=table)
 
 
@@ -46,7 +44,7 @@ def get_more_info(id):
 def add():
     form = AddEntryForm()
     if form.validate_on_submit():
-        flash('Creating...')
+        flash('New entry created!')
         data = {
             "stock_name": form.data["stock_name"],
             "indicators": [{k: v for k, v in d.items() if k != 'csrf_token'} for d in form.data['indicators']]

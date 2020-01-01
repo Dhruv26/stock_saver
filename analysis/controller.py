@@ -3,7 +3,7 @@ from collections import defaultdict
 from . import app
 from .forms import AddEntryForm
 from .model import MongoDb
-from .table import HomePageTable
+from .table import HomePageTable, MoreInfoTable
 from .indicators import INDICATORS
 
 
@@ -15,14 +15,28 @@ def index():
     for entry in raw_items:
         res = defaultdict(str)
         for indicator in entry['indicators']:
-            res[INDICATORS[indicator['name']]] += "|" + indicator['value'] + "|"
+            res[indicator['name']] += "|" + indicator['value'] + "|"
         res['stock_name'] = entry['stock_name']
         res['_id'] = str(entry['_id'])
-        res.update({n: '' for n in INDICATORS.values() if n not in res})
+        res.update({n: '' for n in INDICATORS if n not in res})
         table_items.append(res)
 
     table = HomePageTable(items=table_items,
                           no_items='No entries created yet.',
+                          classes=['hometable'],
+                          border=True)
+    return render_template('index.html', table=table)
+
+
+@app.route('/more_info/<id>', methods=['GET', 'POST'])
+def get_more_info(id):
+    data = MongoDb().get_by_id(id)
+    import pdb;pdb.set_trace()
+    table_items = []
+    for n in data['indicators']:
+        res = {'indicator': n['name'].upper(), 'type': n['type'], 'value': n['value']}
+        table_items.append(res)
+    table = MoreInfoTable(items=table_items,
                           classes=['hometable'],
                           border=True)
     return render_template('index.html', table=table)

@@ -1,6 +1,6 @@
-INDICATORS = {
-    'sma': 'SMA',
-    'ema': 'EMA',
-    'rsi': 'RSI',
-    'Others': 'Others'
-}
+INDICATORS = [
+    'SMA',
+    'EMA',
+    'RSI',
+    'Others'
+]

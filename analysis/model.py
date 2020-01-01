@@ -6,6 +6,9 @@ from . import mongo
 class MongoDb:
     _table_name = 'trademon'
 
+    def get_by_id(self, id):
+        return mongo.db[self._table_name].find_one({"_id": ObjectId(id)})
+
     def get_all(self):
         return list(mongo.db[self._table_name].find())
 

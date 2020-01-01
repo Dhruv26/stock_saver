@@ -10,7 +10,7 @@ class ParameterForm(FlaskForm):
                        choices=[('cross', 'CROSS'), ('val', 'VALUE')])
     name = SelectField(label='Indicator',
                        validators=[DataRequired()],
-                       choices=[(k, v) for k, v in INDICATORS.items()])
+                       choices=[(n, n) for n in INDICATORS])
     value = StringField(label='Value', validators=[DataRequired()])
 
 

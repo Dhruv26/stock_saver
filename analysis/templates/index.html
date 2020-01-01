@@ -1,11 +1,8 @@
 {% extends "base.html" %}
 
 {% block app_content %}
-    <p>Preparing List...</p>
-
-    <div>
-        <a href="/add">Go to add page</a>
-        <br/>
+    <h2 class="text-center">Existing entries</h2>
+    <div class="container">
         {{ table }}
     </div>
 {% endblock %}

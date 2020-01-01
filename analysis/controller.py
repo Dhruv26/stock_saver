@@ -22,9 +22,7 @@ def index():
         table_items.append(res)
 
     table = HomePageTable(items=table_items,
-                          no_items='No entries created yet.',
-                          classes=['hometable'],
-                          border=True)
+                          no_items='No entries created yet.')
     return render_template('index.html', table=table)
 
 

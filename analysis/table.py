@@ -1,4 +1,4 @@
-from flask_table import Table, Col
+from flask_table import Table, Col, ButtonCol
 
 
 class HomePageTable(Table):
@@ -7,3 +7,4 @@ class HomePageTable(Table):
     RSI = Col('RSI')
     EMA = Col('EMA')
     SMA = Col('SMA')
+    DELETE = ButtonCol('Delete', 'delete', url_kwargs=dict(id='_id'))

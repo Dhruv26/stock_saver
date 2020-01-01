@@ -11,14 +11,14 @@ from .indicators import INDICATORS
 @app.route('/index')
 def index():
     raw_items = MongoDb().get_all()
-
     table_items = []
     for entry in raw_items:
-        res = defaultdict(list)
+        res = defaultdict(str)
         for indicator in entry['indicators']:
-            res[INDICATORS[indicator['name']]].append(indicator['value'])
+            res[INDICATORS[indicator['name']]] += "|" + indicator['value'] + "|"
         res['stock_name'] = entry['stock_name']
-        res.update({n: [] for n in INDICATORS.values() if n not in res})
+        res['_id'] = str(entry['_id'])
+        res.update({n: '' for n in INDICATORS.values() if n not in res})
         table_items.append(res)
 
     table = HomePageTable(items=table_items,
@@ -56,7 +56,7 @@ def update():
     return redirect(url_for('index'))
 
 
-@app.route('/delete', methods=['DELETE'])
-def delete(ob_id):
-    MongoDb().delete(ob_id)
+@app.route('/delete/<id>', methods=['GET', 'POST'])
+def delete(id):
+    MongoDb().delete(id)
     return redirect(url_for('index'))

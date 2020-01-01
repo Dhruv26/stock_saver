@@ -1,0 +1,13 @@
+======================================================================================
+TALIB install follow below steps
+======================================================================================
+    Download and Unzip ta-lib-0.4.0-msvc.zip
+    Move the Unzipped Folder ta-lib to C:\
+    Download and Install Visual Studio Community 2015
+    Remember to Select [Visual C++] Feature
+    Build TA-Lib Library
+    From Windows Start Menu, Start [VS2015 x64 Native Tools Command Prompt]
+    Move to C:\ta-lib\c\make\cdr\win32\msvc
+    Build the Library nmake
+    pip install TA-Lib
+======================================================================================

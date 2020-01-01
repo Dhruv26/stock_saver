@@ -16,3 +16,4 @@ pytz==2019.3
 six==1.13.0
 Werkzeug==0.16.0
 WTForms==2.2.1
+nsepy

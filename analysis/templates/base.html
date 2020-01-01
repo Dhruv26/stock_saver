@@ -1,80 +1,99 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        {% if title %}
-        <title>{{ title }} - Trade Monitor</title>
-        {% else %}
-        <title>Welcome to Trade Monitor</title>
-        {% endif %}
+{% extends 'bootstrap/base.html' %}
 
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-        <script type="text/javascript">
-          $(function () {
-             var fieldNum = 1;
-             $("#addNewField").click(function () {
-                var current = $("#indicators");
+{% block title %}
+    {% if title %}
+    {{ title }} - Trade Monitor
+    {% else %}
+    Welcome to Trade Monitor
+    {% endif %}
+{% endblock %}
 
-                $("#indicators").append(createParameter(fieldNum));
-                fieldNum += 1;
-             });
-          });
+{% block scripts %}
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script type="text/javascript">
+      $(function () {
+         var fieldNum = 1;
+         $("#addNewField").click(function () {
+            var current = $("#indicators");
 
-          function createParameter(count) {
-             var toAppend = `
-             <li>
-                <label for="indicators-${count}">Indicators-${count}</label>
-                <table id="indicators-${count}">
-                <tr>
-                   <th><label for="indicators-${count}-type">Parameter Type</label></th>
-                   <td>
-                      <select id="indicators-${count}-type" name="indicators-${count}-type" required>
-                      <option value="cross">CROSS</option>
-                      <option value="val">VALUE</option>
-                      </select>
-                   </td>
-                </tr>
-                <tr>
-                   <th><label for="indicators-${count}-name">Indicator</label></th>
-                   <td>
-                      <select id="indicators-${count}-name" name="indicators-${count}-name" required>
-                      <option value="rsi">RSI</option>
-                      <option value="sma">SMA</option>
-                      <option value="ema">EMA</option>
-                      </select>
-                   </td>
-                </tr>
-                <tr>
-                   <th><label for="indicators-${count}-value">Value</label></th>
-                   <td><input id="indicators-${count}-value" name="indicators-${count}-value" required type="text" value=""></td>
-                </tr>
-                </table>
-                <input id="indicators-${count}-csrf_token" name="indicators-${count}-csrf_token" type="hidden" value="IjlmMDYxMmYzYzk2NmI0MmQ3ZGZmNDE0ZGRkYjgzMzMxZmM4Y2E5MjYi.Xgx1pg.6kw0qUWtHEd3517o5yqCGV36D-4">
-             </li>`;
-             console.log("" + toAppend);
-             return toAppend;
-          }
+            $("#indicators").append(createParameter(fieldNum));
+            fieldNum += 1;
+         });
+      });
 
-        </script>
-    </head>
+      function createParameter(count) {
+         var toAppend = `
+         <li>
+            <label for="indicators-${count}">Indicators-${count}</label>
+            <table id="indicators-${count}">
+            <tr>
+               <th><label for="indicators-${count}-type">Parameter Type</label></th>
+               <td>
+                  <select id="indicators-${count}-type" name="indicators-${count}-type" required>
+                  <option value="cross">CROSS</option>
+                  <option value="val">VALUE</option>
+                  </select>
+               </td>
+            </tr>
+            <tr>
+               <th><label for="indicators-${count}-name">Indicator</label></th>
+               <td>
+                  <select id="indicators-${count}-name" name="indicators-${count}-name" required>
+                  <option value="rsi">RSI</option>
+                  <option value="sma">SMA</option>
+                  <option value="ema">EMA</option>
+                  </select>
+               </td>
+            </tr>
+            <tr>
+               <th><label for="indicators-${count}-value">Value</label></th>
+               <td><input id="indicators-${count}-value" name="indicators-${count}-value" required type="text" value=""></td>
+            </tr>
+            </table>
+            <input id="indicators-${count}-csrf_token" name="indicators-${count}-csrf_token" type="hidden" value="IjlmMDYxMmYzYzk2NmI0MmQ3ZGZmNDE0ZGRkYjgzMzMxZmM4Y2E5MjYi.Xgx1pg.6kw0qUWtHEd3517o5yqCGV36D-4">
+         </li>`;
+         console.log("" + toAppend);
+         return toAppend;
+      }
 
-    <body>
-        <div>Trade Monitor:
-            <a href="{{ url_for('index') }}">Home</a>
-            <a href="{{ url_for('add') }}">Add Stock Entry</a>
+    </script>
+
+    {{ super() }}
+{% endblock %}
+
+{% block navbar %}
+    <nav class="navbar navbar-default">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="{{ url_for('index') }}">Trade Monitor</a>
+            </div>
+
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li><a href="{{ url_for('index') }}">Home</a></li>
+                    <li><a href="{{ url_for('add') }}">Add Stock Entry</a></li>
+                </ul>
+            </div>
         </div>
-        <hr>
+    </nav>
+{% endblock %}
 
+{% block content %}
+    <div class="container">
         {% with messages = get_flashed_messages() %}
         {% if messages %}
-        <ul>
             {% for message in messages %}
-            <li>{{ message }}</li>
+            <div class="alert alert-info" role="alert">{{ message }}</div>
             {% endfor %}
-        </ul>
         {% endif %}
         {% endwith %}
 
-        {% block content %}{% endblock %}
-    </body>
-</html>
+        {% block app_content %}{% endblock %}
+    </div>
+{% endblock %}

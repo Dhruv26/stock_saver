@@ -32,7 +32,7 @@ def index():
 def add():
     form = AddEntryForm()
     if form.validate_on_submit():
-        flash('Creating...')
+        flash('New entry created!')
         data = {
             "stock_name": form.data["stock_name"],
             "indicators": [{k: v for k, v in d.items() if k != 'csrf_token'} for d in form.data['indicators']]

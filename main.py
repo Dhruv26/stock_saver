@@ -1,1 +1,1 @@
-from app import app
+from analysis import app

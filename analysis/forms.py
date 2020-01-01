@@ -4,7 +4,7 @@ from wtforms import FieldList, FormField
 
 
 class ParameterForm(FlaskForm):
-    type = SelectField(label='Parameter Type', choices=[('a', 'A'), ('b', 'B')])
+    type = SelectField(label='Parameter Type', choices=[('cross', 'CROSS'), ('val', 'VALUE')])
     name = SelectField(label='Indicator', choices=[('rsi', 'RSI'), ('sma', 'SMA'), ('ema', 'EMA')])
     value = StringField(label='Value')
 
@@ -14,6 +14,3 @@ class AddEntryForm(FlaskForm):
     flist = FieldList(FormField(ParameterForm), min_entries=1)
     add_parameter = SubmitField('Add Parameter')
     submit = SubmitField('Submit')
-
-    def ab(self):
-        self.flist.append_entry()

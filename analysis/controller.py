@@ -1,6 +1,8 @@
+import json
 from flask import render_template, request
-from app import app
-from app.forms import AddEntryForm
+from . import app
+from .forms import AddEntryForm
+from .model import MongoDb
 
 
 @app.route('/')
@@ -16,7 +18,6 @@ def add():
 
 @app.route('/addEntry', methods=['POST'])
 def add_entry():
-    import json
-    print(json.dumps(request.form, indent=2))
-    import pdb; pdb.set_trace()
+    indicators = dict()
+    ob = AddEntryForm()
     return 'Preparing to save...'

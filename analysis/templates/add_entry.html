@@ -56,16 +56,27 @@
 </head>
 
 <body>
-   <p>Preparing add page...</p>
-   <form action="/addEntry" method="post" novalidate>
+   <h1>Enter the following details</h1>
+
+   <form action="{{ url_for('add') }}" method="post" novalidate>
       {{ form.hidden_tag() }}
       <p>
-         {{ form.stock_name.label }} <br>
+         {{ form.stock_name.label }}
          {{ form.stock_name(size=64) }}
+         <br>
+         {% for error in form.stock_name.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+         {% endfor %}
       </p>
+
       <button type="button" id="addNewField">Add Field</button>
+
       <p>
          {{ form.indicators }}
+         {% for error in form.indicators.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+         <br>
+         {% endfor %}
       </p>
       <div id="myDiv"></div>
 

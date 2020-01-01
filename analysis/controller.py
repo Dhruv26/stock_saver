@@ -1,4 +1,4 @@
-from flask import render_template, request
+from flask import render_template, flash, redirect, url_for
 from collections import defaultdict
 from . import app
 from .forms import AddEntryForm
@@ -29,20 +29,19 @@ def index():
     return render_template('index.html', table=table)
 
 
-@app.route('/add')
+@app.route('/add', methods=['GET', 'POST'])
 def add():
-    return render_template('add_entry.html', form=AddEntryForm())
+    form = AddEntryForm()
+    if form.validate_on_submit():
+        flash('Creating...')
+        data = {
+            "stock_name": form.data["stock_name"],
+            "indicators": [{k: v for k, v in d.items() if k != 'csrf_token'} for d in form.data['indicators']]
+        }
+        MongoDb().insert(data)
+        return redirect('/index')
 
-
-@app.route('/addEntry', methods=['POST'])
-def add_entry():
-    ob = AddEntryForm()
-    data = {
-        "stock_name": ob.data["stock_name"],
-        "indicators": [{k: v for k, v in d.items() if k != 'csrf_token'} for d in ob.data['indicators']]
-    }
-    MongoDb().insert(data)
-    return 'Preparing to save...'
+    return render_template('add_entry.html', form=form)
 
 
 @app.route('/update', methods=['POST'])
@@ -53,10 +52,10 @@ def update():
         "indicators": [{k: v for k, v in d.items() if k != 'csrf_token'} for d in ob.data['indicators']]
     }
     MongoDb().update(data)
-    return 'Preparing to save...'
+    return redirect('index')
 
 
 @app.route('/delete', methods=['DELETE'])
 def delete(ob_id):
     MongoDb().delete(ob_id)
-    return 'Preparing to save...'
+    return redirect('index')

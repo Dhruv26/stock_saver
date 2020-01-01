@@ -4,7 +4,7 @@ from . import app
 from .forms import AddEntryForm
 from .model import MongoDb
 from .table import HomePageTable, MoreInfoTable
-from .indicators import INDICATORS
+from .const import INDICATORS
 
 
 @app.route('/')
@@ -15,12 +15,11 @@ def index():
     for entry in raw_items:
         res = defaultdict(str)
         for indicator in entry['indicators']:
-            res[indicator['name']] += "|" + indicator['value'] + "|"
+            res[indicator['name']] += "|" + indicator['value'] + ' ({}) |\t'.format(indicator['period'][:1])
         res['stock_name'] = entry['stock_name']
         res['_id'] = str(entry['_id'])
         res.update({n: '' for n in INDICATORS if n not in res})
         table_items.append(res)
-
     table = HomePageTable(items=table_items,
                           no_items='No entries created yet.')
     return render_template('index.html', table=table)
@@ -29,15 +28,13 @@ def index():
 @app.route('/more_info/<id>', methods=['GET', 'POST'])
 def get_more_info(id):
     data = MongoDb().get_by_id(id)
-    import pdb;pdb.set_trace()
     table_items = []
     for n in data['indicators']:
-        res = {'indicator': n['name'].upper(), 'type': n['type'], 'value': n['value']}
+        in_name = n['name'].upper() if n['name'].upper() != 'OTHER' else n['other_name']
+        res = {'indicator': in_name, 'type': n['type'], 'period': n['period'], 'value': n['value']}
         table_items.append(res)
-    table = MoreInfoTable(items=table_items,
-                          classes=['hometable'],
-                          border=True)
-    return render_template('index.html', table=table)
+    table = MoreInfoTable(items=table_items)
+    return render_template('more_info.html', table=table, name=data['stock_name'])
 
 
 @app.route('/add', methods=['GET', 'POST'])

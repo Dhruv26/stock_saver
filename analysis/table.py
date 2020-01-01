@@ -5,15 +5,16 @@ class HomePageTable(Table):
     classes = ['table', 'table-striped', 'table-bordered', 'table-hover']
     _id = Col('ID', show=False)
     stock_name = Col('Name')
-    rsi = Col('RSI')
-    ema = Col('EMA')
-    sma = Col('SMA')
+    RSI = Col('RSI')
+    EMA = Col('EMA')
+    SMA = Col('SMA')
     delete = ButtonCol('Delete', 'delete', url_kwargs=dict(id='_id'))
     more_info = ButtonCol('More Info', 'get_more_info', url_kwargs=dict(id='_id'))
 
 
 class MoreInfoTable(Table):
-    #stock_name = Col('Name')
+    classes = ['table', 'table-striped', 'table-bordered', 'table-hover']
     indicator = Col('INDICATOR')
     type = Col('TYPE')
+    period = Col('PERIOD')
     value = Col('VALUE')

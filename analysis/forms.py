@@ -1,6 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, SelectField, SubmitField, FieldList, FormField
 from wtforms import validators
+from .indicators import INDICATORS
 
 
 class ParameterForm(FlaskForm):
@@ -8,7 +9,7 @@ class ParameterForm(FlaskForm):
                        choices=[('cross', 'CROSS'), ('val', 'VALUE')],
                        validators=[validators.DataRequired()])
     name = SelectField(label='Indicator',
-                       choices=[('rsi', 'RSI'), ('sma', 'SMA'), ('ema', 'EMA')],
+                       choices=[(k, v) for k, v in INDICATORS.items()],
                        validators=[validators.DataRequired()])
     value = StringField(label='Value', validators=[validators.DataRequired()])
 

@@ -1,13 +1,32 @@
 from flask import render_template, request
+from collections import defaultdict
 from . import app
 from .forms import AddEntryForm
 from .model import MongoDb
+from .table import HomePageTable
+from .indicators import INDICATORS
 
 
 @app.route('/')
 @app.route('/index')
 def index():
-    return render_template('index.html')
+    raw_items = MongoDb().get_all()
+
+    table_items = []
+    for entry in raw_items:
+        res = defaultdict(list)
+        for indicator in entry['indicators']:
+            res[INDICATORS[indicator['name']]].append(indicator['value'])
+        res['stock_name'] = entry['stock_name']
+        res.update({n: [] for n in INDICATORS.values() if n not in res})
+        table_items.append(res)
+
+    import pdb; pdb.set_trace()
+    table = HomePageTable(items=table_items,
+                          no_items='No entries created yet.',
+                          classes=['hometable'],
+                          border=True)
+    return render_template('index.html', table=table)
 
 
 @app.route('/add')

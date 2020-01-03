@@ -4,7 +4,7 @@ from . import app
 from .forms import AddEntryForm
 from .model import MongoDb
 from .table import HomePageTable, MoreInfoTable
-from .const import INDICATORS
+from .const import INDICATORS, INDICATORS_TYPES
 
 
 @app.route('/')
@@ -37,6 +37,11 @@ def get_more_info(id):
     return render_template('more_info.html', table=table, name=data['stock_name'])
 
 
+@app.route('/indicator_types', methods=['GET'])
+def get_indicator_types():
+    return str(INDICATORS_TYPES)
+
+
 @app.route('/add', methods=['GET', 'POST'])
 def add():
     form = AddEntryForm()
@@ -44,7 +49,8 @@ def add():
         flash('New entry created!')
         data = {
             "stock_name": form.data["stock_name"],
-            "indicators": [{k: v for k, v in d.items() if k != 'csrf_token'} for d in form.data['indicators']]
+            "indicators": [{k: v for k, v in d.items() if k != 'csrf_token'}
+                           for d in form.data['indicators'] if d['value']]
         }
         MongoDb().insert(data)
         return redirect(url_for('index'))

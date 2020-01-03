@@ -14,7 +14,7 @@ class ParameterForm(FlaskForm):
                        validators=[DataRequired()],
                        choices=[(n, n) for n in INDICATORS])
     other_name = StringField(label='Other Indicator(optional)')
-    value = StringField(label='Value', validators=[DataRequired()])
+    value = StringField(label='Value')
 
 
 class AddEntryForm(FlaskForm):

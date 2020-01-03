@@ -20,8 +20,6 @@ function createParameter(count) {
                     </th>
                     <td>
                         <select id="indicators-${count}-type" name="indicators-${count}-type" required>
-                            <option value="cross">CROSS</option>
-                            <option value="val">VALUE</option>
                         </select>
                     </td>
                 </tr>

@@ -1,13 +1,13 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, SelectField, SubmitField, FieldList, FormField
 from wtforms.validators import DataRequired
-from .const import INDICATORS, PERIOD
+from .const import INDICATORS, PERIOD, INDICATORS_TYPES
 
 
 class ParameterForm(FlaskForm):
     type = SelectField(label='Parameter Type',
                        validators=[DataRequired()],
-                       choices=[('cross', 'CROSS'), ('val', 'VALUE')])
+                       choices=[(k, v) for k, v in INDICATORS_TYPES.items()])
     period = SelectField(
         label='Period', validators=[DataRequired()], choices=[(n, n) for n in PERIOD])
     name = SelectField(label='Indicator',

@@ -16,6 +16,9 @@ class ParameterForm(FlaskForm):
     other_name = StringField(label='Other Indicator(optional)')
     value = StringField(label='Value')
 
+    class Meta:
+        csrf = False
+
 
 class AddEntryForm(FlaskForm):
     stock_name = StringField(label='Stock Name', validators=[DataRequired()])

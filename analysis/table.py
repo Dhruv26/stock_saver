@@ -13,8 +13,12 @@ class HomePageTable(Table):
 
 
 class MoreInfoTable(Table):
+    group_name = Col('Group')
     classes = ['table', 'table-striped', 'table-bordered', 'table-hover']
     indicator = Col('INDICATOR')
     type = Col('TYPE')
     period = Col('PERIOD')
     value = Col('VALUE')
+    comment = Col('Comment')
+    date_ref = Col('Historical Date Ref')
+

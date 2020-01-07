@@ -10,24 +10,28 @@ def get_table():
     data = []
     for entry in MongoDb().get_all():
         res = defaultdict(str)
-        for _, indicators in entry['indicators'].items():
-            for indicator in indicators:
-                res[indicator['name']] += "|" + indicator['value'] + ' ({}) |\t'.format(indicator['period'][:1])
-        res['stock_name'] = entry['stock_name']
+        for group in entry['indicatorGroups']:
+            for indicator in group['indicators']:
+                #res[indicator['name']] += "|" + indicator['value'] + ' ({}) |\t'.format(indicator['period'][:1])
+                if 'indicator' in indicator and indicator.get('value'):
+                    res[indicator['indicator']] += indicator['value'] + '({}), '.format(indicator.get('period', '')[:1])
+        res['StockName'] = entry['stockName']
         res['_id'] = str(entry['_id'])
         res.update({n: '' for n in INDICATORS if n not in res})
         data.append(res)
     return {
         "Status": 200,
-        "Data": MongoDb().get_all()
+        "Data": data,
     }
 
 
 @app.route('/get_stock_info/<id>', methods=['GET', 'POST'])
 def get_stock_info(id):
+    stock_info = MongoDb().get_by_id(id)
+    stock_info['_id'] = str(stock_info['_id'])
     return {
         "Status": 200,
-        "Data": MongoDb().get_by_id(id)
+        "Data": stock_info
     }
 
 
@@ -61,7 +65,7 @@ def update():
     }
 
 
-@app.route('/delete/<id>', methods=['GET', 'POST'])
+@app.route('/delete/<id>', methods=['GET', 'POST', 'DELETE'])
 def delete(id):
     MongoDb().delete(id)
     return {

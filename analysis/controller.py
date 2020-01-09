@@ -4,6 +4,7 @@ from collections import defaultdict
 from . import app
 from .model import MongoDb
 from .const import INDICATORS, INDICATORS_TYPES, PERIOD
+from .processor import TechAnalysis
 
 
 @app.route('/get_table')
@@ -15,8 +16,17 @@ def get_table():
             for indicator in group['indicators']:
                 #res[indicator['name']] += "|" + indicator['value'] + ' ({}) |\t'.format(indicator['period'][:1])
                 if 'indicator' in indicator and indicator.get('value'):
-                    res[indicator['indicator']] += indicator['value'] + '({}), '.format(indicator.get('period', '')[:1])
+                    if indicator['indicator'] != 'PRICE':
+                        res[indicator['indicator']] += indicator['value'] + '({}), '.format(
+                            indicator.get('period', '')[:1])
+                    else:
+                        res[indicator['indicator']] += indicator['value'] + ', '
         res['StockName'] = entry['stockName'] + ' ({})'.format(str(date.today()))
+        try:
+            tech_analysis = TechAnalysis(entry['stockName'])
+            res['LivePrice'] = tech_analysis.get_live_price()
+        except:
+            res['LivePrice'] = 'Unavaiable'
         res['_id'] = str(entry['_id'])
         res.update({n: '' for n in INDICATORS if n not in res})
         data.append(res)

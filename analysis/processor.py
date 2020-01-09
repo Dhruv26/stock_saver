@@ -1,7 +1,7 @@
 import os
 import pandas as pd
 from datetime import date, timedelta
-from .nsepy import get_quote, get_history
+from .nsepy_fix import get_quote, get_history
 from pandas_datareader import data
 from talib import RSI, SMA, EMA, BBANDS
 
@@ -10,11 +10,11 @@ class TechAnalysis:
 
     def __init__(self, symbol='OIL'):
         self._symbol = symbol
-        self._hist_prices = self.get_hist_prices()
-        self._live_price = self.get_live_price()
+        #self._hist_prices = self.get_hist_prices()
+        self._live_price = get_quote(self._symbol)['lastPrice']
 
     def get_live_price(self):
-        return get_quote(self._symbol)['lastPrice']
+        return self._live_price
 
     def get_hist_prices(self):
         # return quandl.get("NSE/{}".format(self._symbol), api_key="JQKKNh-2yVgdMKMbhxHu")

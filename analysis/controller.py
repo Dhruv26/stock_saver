@@ -1,4 +1,5 @@
 from flask import request
+from datetime import date
 from collections import defaultdict
 from . import app
 from .model import MongoDb
@@ -15,7 +16,7 @@ def get_table():
                 #res[indicator['name']] += "|" + indicator['value'] + ' ({}) |\t'.format(indicator['period'][:1])
                 if 'indicator' in indicator and indicator.get('value'):
                     res[indicator['indicator']] += indicator['value'] + '({}), '.format(indicator.get('period', '')[:1])
-        res['StockName'] = entry['stockName']
+        res['StockName'] = entry['stockName'] + ' ({})'.format(str(date.today()))
         res['_id'] = str(entry['_id'])
         res.update({n: '' for n in INDICATORS if n not in res})
         data.append(res)
@@ -58,7 +59,8 @@ def add():
 @app.route('/update', methods=['POST'])
 def update():
     data = request.json
-    ob_id = data['id']
+    ob_id = data['_id']
+    data.pop('_id', None)
     MongoDb().update(ob_id, data)
     return {
         "Status": 201

@@ -1,12 +1,15 @@
 INDICATORS = [
+    'PRICE',
     'SMA',
     'EMA',
     'RSI',
+    'SUPERTREND',
     'OTHER'
 ]
 
 
 INDICATORS_TYPES = {
+    'TOUCH': '=',
     'MA': '\u2191',
     'MB': '\u2193',
     'MBMA': '\u2193 then \u2191',

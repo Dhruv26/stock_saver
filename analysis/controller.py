@@ -14,7 +14,7 @@ def get_table():
         res = defaultdict(str)
         for group in entry['indicatorGroups']:
             res['_id'] = str(entry['_id'])
-            res['StockName'] = entry['stockName'] + ' ({})'.format(str(date.today()))
+            res['StockName'] = entry['stockName']
             res['Alert'] = False
             try:
                 tech_analysis = TechAnalysis(entry['stockName'])
@@ -68,7 +68,9 @@ def get_entry_meta_data():
 
 @app.route('/add', methods=['GET', 'POST'])
 def add():
-    MongoDb().insert(request.json)
+    data = request.json
+    data['stockName'] += ' ({})'.format(str(date.today()))
+    MongoDb().insert(data)
     return {
         "Status": 201
     }

@@ -13,22 +13,30 @@ def get_table():
     for entry in MongoDb().get_all():
         res = defaultdict(str)
         for group in entry['indicatorGroups']:
+            res['_id'] = str(entry['_id'])
+            res['StockName'] = entry['stockName'] + ' ({})'.format(str(date.today()))
+            res['Alert'] = False
+            try:
+                tech_analysis = TechAnalysis(entry['stockName'])
+                res['LivePrice'] = tech_analysis.get_live_price()
+            except:
+                res['LivePrice'] = ''
             for indicator in group['indicators']:
-                #res[indicator['name']] += "|" + indicator['value'] + ' ({}) |\t'.format(indicator['period'][:1])
                 if 'indicator' in indicator and indicator.get('value'):
                     if indicator['indicator'] != 'PRICE':
                         res[indicator['indicator']] += indicator['value'] + '({}), '.format(
                             indicator.get('period', '')[:1])
                     else:
                         res[indicator['indicator']] += indicator['value'] + ', '
-        res['StockName'] = entry['stockName'] + ' ({})'.format(str(date.today()))
-        try:
-            tech_analysis = TechAnalysis(entry['stockName'])
-            res['LivePrice'] = tech_analysis.get_live_price()
-        except:
-            res['LivePrice'] = 'Unavaiable'
-        res['_id'] = str(entry['_id'])
-        res.update({n: '' for n in INDICATORS if n not in res})
+                        try:
+                            price = float(indicator['value'])
+                            if res['LivePrice']:
+                                perc_val = price * 0.05
+                                if price - perc_val <= res['LivePrice'] <= price + perc_val:
+                                    res['Alert'] = True
+                        except:
+                            pass
+            res.update({n: '' for n in INDICATORS if n not in res})
         data.append(res)
     return {
         "Status": 200,

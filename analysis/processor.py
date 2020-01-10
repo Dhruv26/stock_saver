@@ -2,7 +2,7 @@ import os
 import pandas as pd
 from datetime import date, timedelta
 from pandas_datareader import data
-from talib import RSI, SMA, EMA, BBANDS
+#from talib import RSI, SMA, EMA, BBANDS
 from yahoo_fin import stock_info as si
 
 
@@ -30,6 +30,7 @@ class TechAnalysis:
             hist_prices.to_pickle(cache_file)
         return hist_prices
 
+    '''
     def get_sma(self, period):
         return SMA(self._hist_prices['Close'], timeperiod=period)
 
@@ -46,3 +47,4 @@ class TechAnalysis:
             'MBMA': '\u2193 then \u2191',
             'MAMB': '\u2191 then \u2193',
         }
+    '''

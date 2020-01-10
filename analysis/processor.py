@@ -1,9 +1,9 @@
 import os
 import pandas as pd
 from datetime import date, timedelta
-from .nsepy_fix import get_quote, get_history
 from pandas_datareader import data
 from talib import RSI, SMA, EMA, BBANDS
+from yahoo_fin import stock_info as si
 
 
 class TechAnalysis:
@@ -11,7 +11,7 @@ class TechAnalysis:
     def __init__(self, symbol='OIL'):
         self._symbol = symbol
         #self._hist_prices = self.get_hist_prices()
-        self._live_price = get_quote(self._symbol)['lastPrice']
+        self._live_price = si.get_live_price('{}.NS'.format(symbol))
 
     def get_live_price(self):
         return self._live_price

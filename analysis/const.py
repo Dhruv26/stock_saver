@@ -1,3 +1,8 @@
+TRADE_TYPES = [
+    'Buy',
+    'Sell'
+]
+
 INDICATORS = [
     'PRICE',
     'SMA',

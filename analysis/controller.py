@@ -3,7 +3,7 @@ from datetime import date
 from collections import defaultdict
 from . import app
 from .model import MongoDb
-from .const import INDICATORS, INDICATORS_TYPES, PERIOD
+from .const import TRADE_TYPES, INDICATORS, INDICATORS_TYPES, PERIOD
 from .processor import TechAnalysis
 
 
@@ -61,7 +61,8 @@ def get_entry_meta_data():
         "Data": {
             'indicators': INDICATORS,
             'indicatorTypes': INDICATORS_TYPES,
-            'timePeriods': PERIOD
+            'timePeriods': PERIOD,
+            'tradeTypes': TRADE_TYPES
         }
     }
 
